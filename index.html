@@ -5,50 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mass Chess</title>
 
-  <!-- Chessboard CSS -->
+  <!-- ✅ Correct local CSS filename -->
   <link rel="stylesheet" href="chessboard-1.0.0.css" />
 
   <style>
     body {
       background-color: #222;
       color: #eee;
-      font-family: monospace, monospace;
+      font-family: monospace;
       text-align: center;
-      margin: 0;
       padding: 20px;
     }
 
     #board {
-      width: 416px;
-      height: 416px;
-      margin: 20px auto;
+      width: 400px;
+      margin: 0 auto;
       border: 2px solid #555;
-      background-color: #444;
-      display: block;
-      box-sizing: border-box;
-    }
-
-    /* Ensure .square elements are visible and styled */
-    .square {
-      display: block !important;
-      width: 52px !important;
-      height: 52px !important;
-      float: left !important;
-      box-sizing: border-box !important;
-      border: 0px solid transparent;
-    }
-
-    .square.white {
-      background-color: #f0d9b5 !important;
-    }
-
-    .square.black {
-      background-color: #b58863 !important;
-    }
-
-    .piece {
-      width: 100% !important;
-      height: 100% !important;
     }
   </style>
 </head>
@@ -56,8 +28,27 @@
   <h1>Mass Chess</h1>
   <div id="board"></div>
 
-  <!-- jQuery -->
+  <!-- ✅ Local JavaScript -->
   <script src="jquery-3.6.0.min.js"></script>
+  <script src="chessboard-1.0.0.js"></script>
+
+  <script>
+    $(function () {
+      if (typeof Chessboard !== 'function') {
+        alert("❌ Chessboard.js failed to load.");
+        return;
+      }
+
+      const board = Chessboard('board', {
+        position: 'start',
+        draggable: true
+      });
+
+      console.log("✅ Chessboard initialized.");
+    });
+  </script>
+</body>
+</html>
 
 
 
