@@ -4,39 +4,51 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mass Chess</title>
+
+  <!-- Chessboard CSS -->
   <link rel="stylesheet" href="chessboard-1.0.0.min.css" />
+
   <style>
     body {
       background-color: #222;
       color: #eee;
       font-family: monospace, monospace;
       text-align: center;
-      margin: 0; 
+      margin: 0;
       padding: 20px;
     }
+
     #board {
-      width: 420px;
-      height: 420px;          /* fixed height so board shows */
+      width: 416px;
+      height: 416px;
       margin: 20px auto;
       border: 2px solid #555;
-      background-color: #444; /* helps visually debug */
+      background-color: #444;
+      display: block;
       box-sizing: border-box;
-      display: block;         /* ensure visible */
     }
-    /* Force squares visible and sized */
+
+    /* Ensure .square elements are visible and styled */
     .square {
       display: block !important;
       width: 52px !important;
       height: 52px !important;
       float: left !important;
       box-sizing: border-box !important;
-      border: 1px solid #999; /* optional border to see squares */
+      border: 0px solid transparent;
     }
+
     .square.white {
       background-color: #f0d9b5 !important;
     }
+
     .square.black {
       background-color: #b58863 !important;
+    }
+
+    .piece {
+      width: 100% !important;
+      height: 100% !important;
     }
   </style>
 </head>
@@ -44,47 +56,8 @@
   <h1>Mass Chess</h1>
   <div id="board"></div>
 
-  <!-- Load jQuery locally -->
+  <!-- jQuery -->
   <script src="jquery-3.6.0.min.js"></script>
-  <!-- Load Chessboard.js locally -->
-  <script src="chessboard-1.0.0.min.js"></script>
-
-  <script>
-    $(document).ready(function() {
-      if (typeof Chessboard !== 'function') {
-        console.error('Chessboard is NOT loaded! Check your script paths.');
-        alert('Error: Chessboard library not loaded!');
-        return;
-      }
-
-      var board = Chessboard('board', {
-        position: 'start',
-        draggable: true,
-        moveSpeed: 200,
-        snapbackSpeed: 150,
-
-        onDragStart: function(source, piece) {
-          console.log('Drag started:', piece, 'from', source);
-        },
-
-        onDrop: function(source, target, piece) {
-          console.log('Dropped:', piece, 'from', source, 'to', target);
-          if (source === target) {
-            console.log('Invalid move: source and target are the same. Snapback.');
-            return 'snapback';
-          }
-        },
-
-        onSnapEnd: function() {
-          console.log('Snap animation ended.');
-        }
-      });
-
-      console.log('Chessboard initialized.');
-    });
-  </script>
-</body>
-</html>
 
 
 
