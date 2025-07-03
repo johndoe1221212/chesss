@@ -3,125 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mass Chess - Debug Version</title>
-
-  <!-- chessboard CSS CDN -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/css/chessboard.min.css"
-    integrity="sha512-nfZPT+7A2MZZzIV4w6OIBj6Ty7mO5lNINoJ99vIXcHog3k5TQ7EbPRZcTLaZ93azMZUDUYF4GcMWlSNfDA0i9g=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
+  <title>Mass Chess</title>
+  <link rel="stylesheet" href="chessboard-1.0.0.min.css" />
   <style>
-    /* Center and size the board */
-    #board {
-      width: 420px;
-      margin: 30px auto;
-      border: 2px solid #333;
-      box-sizing: border-box;
-    }
     body {
       background-color: #222;
       color: #eee;
       font-family: monospace, monospace;
       text-align: center;
+      margin: 0; padding: 20px;
     }
-    #log {
-      max-width: 600px;
+    #board {
+      width: 420px;
       margin: 20px auto;
-      padding: 10px;
-      background: #333;
-      border-radius: 4px;
-      font-size: 14px;
-      height: 200px;
-      overflow-y: auto;
-      text-align: left;
-      white-space: pre-wrap;
+      border: 2px solid #555;
+      box-sizing: border-box;
     }
   </style>
 </head>
 <body>
-  <h1>Mass Chess - Debug Mode</h1>
+  <h1>Mass Chess</h1>
   <div id="board"></div>
-  <div id="log" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- jQuery CDN -->
-  <script
-    src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-K+ctZQzMbEqMQdS0mDKy1Zig5dSvZ2eXkQRroV+6G7E="
-    crossorigin="anonymous"
-  ></script>
-
-  <!-- chessboard.js CDN -->
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/js/chessboard.min.js"
-    integrity="sha512-xv/hIq44QCUWv9X97H+v8Wav8PRPPKQfR1LzD6V6QucA0Yw1yOafVhtCgO1Whm4OCV9pIwK7qObwDE+q6xKa/A=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  ></script>
+  <!-- Load jQuery locally -->
+  <script src="jquery-3.6.0.min.js"></script>
+  <!-- Load Chessboard.js locally -->
+  <script src="chessboard-1.0.0.min.js"></script>
 
   <script>
-    // Debug log helper function
-    function log(msg) {
-      console.log(msg);
-      const logDiv = document.getElementById('log');
-      if (logDiv) {
-        logDiv.textContent += msg + "\n";
-        logDiv.scrollTop = logDiv.scrollHeight;
-      }
-    }
-
-    // Run after DOM and scripts ready
-    $(function () {
-      log('jQuery loaded. Version: ' + $.fn.jquery);
-
-      // Check Chessboard availability
+    $(document).ready(function() {
       if (typeof Chessboard !== 'function') {
-        log('ERROR: Chessboard is NOT loaded! Check script src URLs and network.');
+        console.error('Chessboard is NOT loaded! Check your script paths.');
         return;
-      } else {
-        log('Chessboard library loaded successfully.');
       }
 
-      // Initialize the chessboard
-      try {
-        var board = Chessboard('board', {
-          position: 'start',
-          draggable: true,
-          moveSpeed: 300,
-          snapbackSpeed: 200,
-          snapSpeed: 100,
+      var board = Chessboard('board', {
+        position: 'start',
+        draggable: true,
+        moveSpeed: 200,
+        snapbackSpeed: 150,
 
-          onDragStart: function (source, piece, position, orientation) {
-            log(`Drag started: ${piece} from ${source}`);
-          },
+        onDragStart: function(source, piece) {
+          console.log('Drag started:', piece, 'from', source);
+        },
 
-          onDrop: function (source, target, piece, newPos, oldPos, orientation) {
-            log(`Piece dropped: ${piece} from ${source} to ${target}`);
-            // Reject dropping piece on the same square (example)
-            if (source === target) {
-              log('Invalid move: source and target are the same. Snapback triggered.');
-              return 'snapback';
-            }
-            // You can add move legality checks here if you want
-          },
-
-          onSnapEnd: function () {
-            log('Snap animation ended.');
-          },
-
-          onMoveEnd: function (oldPos, newPos) {
-            log('Board position changed.');
+        onDrop: function(source, target, piece) {
+          console.log('Dropped:', piece, 'from', source, 'to', target);
+          if (source === target) {
+            console.log('Invalid move: source and target are the same. Snapback.');
+            return 'snapback';
           }
-        });
+        },
 
-        log('Chessboard initialized successfully.');
-      } catch (e) {
-        log('ERROR during Chessboard initialization: ' + e.message);
-      }
+        onSnapEnd: function() {
+          console.log('Snap animation ended.');
+        }
+      });
+
+      console.log('Chessboard initialized.');
     });
   </script>
 </body>
 </html>
+
 
