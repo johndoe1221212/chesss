@@ -41,7 +41,8 @@
 
       const board = Chessboard('board', {
         position: 'start',
-        draggable: true
+        draggable: true,
+        pieceTheme: 'img/chesspieces/wikipedia/{piece}.png'  // <--- here
       });
 
       console.log("✅ Chessboard initialized.");
