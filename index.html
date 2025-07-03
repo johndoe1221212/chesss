@@ -3,65 +3,125 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mass Chess - Debug Test</title>
+  <title>Mass Chess - Debug Version</title>
 
-  <!-- Use CDN for chessboard.css to avoid local file issues -->
+  <!-- chessboard CSS CDN -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/css/chessboard.min.css"
+    integrity="sha512-nfZPT+7A2MZZzIV4w6OIBj6Ty7mO5lNINoJ99vIXcHog3k5TQ7EbPRZcTLaZ93azMZUDUYF4GcMWlSNfDA0i9g=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
   />
   <style>
-    /* Optional: set board size */
+    /* Center and size the board */
     #board {
-      width: 400px;
+      width: 420px;
+      margin: 30px auto;
+      border: 2px solid #333;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #222;
+      color: #eee;
+      font-family: monospace, monospace;
+      text-align: center;
+    }
+    #log {
+      max-width: 600px;
       margin: 20px auto;
+      padding: 10px;
+      background: #333;
+      border-radius: 4px;
+      font-size: 14px;
+      height: 200px;
+      overflow-y: auto;
+      text-align: left;
+      white-space: pre-wrap;
     }
   </style>
 </head>
 <body>
-
+  <h1>Mass Chess - Debug Mode</h1>
   <div id="board"></div>
+  <div id="log" aria-live="polite" aria-atomic="true"></div>
 
   <!-- jQuery CDN -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-K+ctZQzMbEqMQdS0mDKy1Zig5dSvZ2eXkQRroV+6G7E="
+    crossorigin="anonymous"
+  ></script>
 
   <!-- chessboard.js CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/js/chessboard.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/js/chessboard.min.js"
+    integrity="sha512-xv/hIq44QCUWv9X97H+v8Wav8PRPPKQfR1LzD6V6QucA0Yw1yOafVhtCgO1Whm4OCV9pIwK7qObwDE+q6xKa/A=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
 
   <script>
-    // Debug helper: check if jQuery and Chessboard loaded
-    console.log('jQuery version:', $.fn.jquery);
-    console.log('Chessboard defined:', typeof Chessboard === 'function');
+    // Debug log helper function
+    function log(msg) {
+      console.log(msg);
+      const logDiv = document.getElementById('log');
+      if (logDiv) {
+        logDiv.textContent += msg + "\n";
+        logDiv.scrollTop = logDiv.scrollHeight;
+      }
+    }
 
-    // Initialize chessboard when DOM and scripts are ready
+    // Run after DOM and scripts ready
     $(function () {
+      log('jQuery loaded. Version: ' + $.fn.jquery);
+
+      // Check Chessboard availability
       if (typeof Chessboard !== 'function') {
-        console.error('Chessboard is NOT loaded! Check your script paths.');
+        log('ERROR: Chessboard is NOT loaded! Check script src URLs and network.');
         return;
+      } else {
+        log('Chessboard library loaded successfully.');
       }
 
+      // Initialize the chessboard
       try {
         var board = Chessboard('board', {
           position: 'start',
           draggable: true,
+          moveSpeed: 300,
+          snapbackSpeed: 200,
+          snapSpeed: 100,
+
           onDragStart: function (source, piece, position, orientation) {
-            console.log('Drag started:', source, piece);
+            log(`Drag started: ${piece} from ${source}`);
           },
+
           onDrop: function (source, target, piece, newPos, oldPos, orientation) {
-            console.log('Piece dropped:', piece, 'from', source, 'to', target);
-            // Simple legality check (no actual chess rules here)
-            if (target === source) return 'snapback';
+            log(`Piece dropped: ${piece} from ${source} to ${target}`);
+            // Reject dropping piece on the same square (example)
+            if (source === target) {
+              log('Invalid move: source and target are the same. Snapback triggered.');
+              return 'snapback';
+            }
+            // You can add move legality checks here if you want
           },
+
           onSnapEnd: function () {
-            console.log('Snap ended');
+            log('Snap animation ended.');
           },
+
+          onMoveEnd: function (oldPos, newPos) {
+            log('Board position changed.');
+          }
         });
 
-        console.log('Chessboard initialized successfully.');
+        log('Chessboard initialized successfully.');
       } catch (e) {
-        console.error('Error initializing Chessboard:', e);
+        log('ERROR during Chessboard initialization: ' + e.message);
       }
     });
   </script>
 </body>
 </html>
+
