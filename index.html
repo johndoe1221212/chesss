@@ -3,14 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mass Chess</title>
-  <link rel="stylesheet" href="chessboard-1.0.0.min.css" />
-  <link rel="stylesheet" href="style.css" />
+  <title>Mass Chess - Debug Test</title>
+
+  <!-- Use CDN for chessboard.css to avoid local file issues -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/css/chessboard.min.css"
+  />
+  <style>
+    /* Optional: set board size */
+    #board {
+      width: 400px;
+      margin: 20px auto;
+    }
+  </style>
 </head>
 <body>
+
   <div id="board"></div>
+
+  <!-- jQuery CDN -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="chessboard-1.0.0.min.js"></script>
-  <script src="script.js"></script>
+
+  <!-- chessboard.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/js/chessboard.min.js"></script>
+
+  <script>
+    // Debug helper: check if jQuery and Chessboard loaded
+    console.log('jQuery version:', $.fn.jquery);
+    console.log('Chessboard defined:', typeof Chessboard === 'function');
+
+    // Initialize chessboard when DOM and scripts are ready
+    $(function () {
+      if (typeof Chessboard !== 'function') {
+        console.error('Chessboard is NOT loaded! Check your script paths.');
+        return;
+      }
+
+      try {
+        var board = Chessboard('board', {
+          position: 'start',
+          draggable: true,
+          onDragStart: function (source, piece, position, orientation) {
+            console.log('Drag started:', source, piece);
+          },
+          onDrop: function (source, target, piece, newPos, oldPos, orientation) {
+            console.log('Piece dropped:', piece, 'from', source, 'to', target);
+            // Simple legality check (no actual chess rules here)
+            if (target === source) return 'snapback';
+          },
+          onSnapEnd: function () {
+            console.log('Snap ended');
+          },
+        });
+
+        console.log('Chessboard initialized successfully.');
+      } catch (e) {
+        console.error('Error initializing Chessboard:', e);
+      }
+    });
+  </script>
 </body>
 </html>
