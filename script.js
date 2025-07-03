@@ -1,6 +1,5 @@
-window.onload = function () {
-  Chessboard('board', {
-    position: 'start',
-    draggable: false
+window.onload = function() {
+  var board = Chessboard('board', {
+    position: 'start'
   });
 };
