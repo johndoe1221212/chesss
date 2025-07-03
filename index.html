@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mass Chess</title>
 
-  <!-- ✅ Correct local CSS filename -->
   <link rel="stylesheet" href="chessboard-1.0.0.css" />
 
   <style>
@@ -28,7 +27,6 @@
   <h1>Mass Chess</h1>
   <div id="board"></div>
 
-  <!-- ✅ Local JavaScript with updated filename -->
   <script src="jquery-3.6.0.min.js"></script>
   <script src="chessboard-1.0.0.js"></script>
 
@@ -42,7 +40,7 @@
       const board = Chessboard('board', {
         position: 'start',
         draggable: true,
-        pieceTheme: 'img/chesspieces/wikipedia/{piece}.png'  // <--- here
+        pieceTheme: 'img/{piece}.png'  // images directly inside img/
       });
 
       console.log("✅ Chessboard initialized.");
