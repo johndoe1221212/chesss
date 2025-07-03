@@ -16,11 +16,27 @@
     }
     #board {
       width: 420px;
-      height: 420px;          /* IMPORTANT: fixed height so board shows */
+      height: 420px;          /* fixed height so board shows */
       margin: 20px auto;
       border: 2px solid #555;
-      background-color: #444; /* Optional: helps visually debug */
+      background-color: #444; /* helps visually debug */
       box-sizing: border-box;
+      display: block;         /* ensure visible */
+    }
+    /* Force squares visible and sized */
+    .square {
+      display: block !important;
+      width: 52px !important;
+      height: 52px !important;
+      float: left !important;
+      box-sizing: border-box !important;
+      border: 1px solid #999; /* optional border to see squares */
+    }
+    .square.white {
+      background-color: #f0d9b5 !important;
+    }
+    .square.black {
+      background-color: #b58863 !important;
     }
   </style>
 </head>
@@ -37,6 +53,7 @@
     $(document).ready(function() {
       if (typeof Chessboard !== 'function') {
         console.error('Chessboard is NOT loaded! Check your script paths.');
+        alert('Error: Chessboard library not loaded!');
         return;
       }
 
@@ -68,6 +85,7 @@
   </script>
 </body>
 </html>
+
 
 
 
