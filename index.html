@@ -33,7 +33,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
   <script>
-    // Your Firebase config
+    // ✅ Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyByubdnNzRNASPIcswGJqNFd45cDWDs-xI",
       authDomain: "youtuube-43af7.firebaseapp.com",
@@ -45,45 +45,38 @@
       measurementId: "G-2PSD5XRPE4"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
   </script>
 
-  <!-- jQuery + Chessboard -->
+  <!-- jQuery and Chessboard -->
   <script src="jquery-3.6.0.min.js"></script>
   <script src="chessboard-1.0.0.js"></script>
 
   <script>
     $(function () {
-      if (typeof Chessboard !== 'function') {
-        alert("❌ Chessboard.js failed to load.");
-        return;
-      }
-
       const board = Chessboard('board', {
         position: 'start',
         draggable: false,
         pieceTheme: 'img/{piece}.png'
       });
 
-      console.log("✅ Chessboard initialized.");
+      console.log("✅ Chessboard initialized");
 
-      // 🔁 Firebase: Watch for live move updates
+      // Listen for latestMove in Firebase
       firebase.database().ref('latestMove').on('value', (snapshot) => {
-        const move = snapshot.val(); // example: "e2e4"
+        const move = snapshot.val(); // e.g., "e2e4"
         if (move && move.length === 4) {
           const from = move.slice(0, 2);
           const to = move.slice(2, 4);
           board.move(`${from}-${to}`);
-          console.log("✅ Move received:", move);
+          console.log(`✅ Move: ${from} to ${to}`);
         }
       });
     });
   </script>
 </body>
 </html>
-
 
 
 
