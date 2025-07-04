@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mass Chess</title>
 
+  <!-- Chessboard styles -->
   <link rel="stylesheet" href="chessboard-1.0.0.css" />
 
   <style>
@@ -27,6 +28,29 @@
   <h1>Mass Chess</h1>
   <div id="board"></div>
 
+  <!-- Firebase (compat) SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script>
+    // Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyByubdnNzRNASPIcswGJqNFd45cDWDs-xI",
+      authDomain: "youtuube-43af7.firebaseapp.com",
+      databaseURL: "https://youtuube-43af7-default-rtdb.firebaseio.com",
+      projectId: "youtuube-43af7",
+      storageBucket: "youtuube-43af7.appspot.com",
+      messagingSenderId: "129367990971",
+      appId: "1:129367990971:web:e95b6c464ffe9cef713f9e",
+      measurementId: "G-2PSD5XRPE4"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+  </script>
+
+  <!-- jQuery + Chessboard -->
   <script src="jquery-3.6.0.min.js"></script>
   <script src="chessboard-1.0.0.js"></script>
 
@@ -39,15 +63,27 @@
 
       const board = Chessboard('board', {
         position: 'start',
-        draggable: true,
-        pieceTheme: 'img/{piece}.png'  // images directly inside img/
+        draggable: false,
+        pieceTheme: 'img/{piece}.png'
       });
 
       console.log("✅ Chessboard initialized.");
+
+      // 🔁 Firebase: Watch for live move updates
+      firebase.database().ref('latestMove').on('value', (snapshot) => {
+        const move = snapshot.val(); // example: "e2e4"
+        if (move && move.length === 4) {
+          const from = move.slice(0, 2);
+          const to = move.slice(2, 4);
+          board.move(`${from}-${to}`);
+          console.log("✅ Move received:", move);
+        }
+      });
     });
   </script>
 </body>
 </html>
+
 
 
 
